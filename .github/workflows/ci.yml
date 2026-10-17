@@ -9,8 +9,8 @@ jobs:
   audit:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
         with:
           python-version: "3.12"
           cache: pip
@@ -19,7 +19,7 @@ jobs:
         run: pytest -q
       - name: Build the upstream warehouse, run dbt models + tests, produce the report
         run: python scripts/run_audit.py --bootstrap --scale 0.25
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: audit-report
           path: reports/
