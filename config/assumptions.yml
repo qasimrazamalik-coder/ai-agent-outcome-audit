@@ -1,0 +1,13 @@
+# Every assumption the cost model uses, in one place. Change a value and rerun
+# `python scripts/run_audit.py` to see how the recommendations move.
+
+bot_cost_per_session_usd: 0.85        # vendor contract price per bot session
+months_of_data: 6                      # Jan-Jun 2025; used to annualise
+agent_occupancy: 0.75                  # share of paid agent time spent on contacts; cost per handled minute = loaded rate / occupancy
+remaining_customer_lifetime_months: 18 # value of a retained customer = MRR x this
+min_sessions_per_driver: 150           # smaller drivers are reported but not acted on
+confidence_level: 0.95
+
+sensitivity:
+  bot_cost_per_session_usd: [0.50, 0.85, 1.50]
+  remaining_customer_lifetime_months: [12, 18, 36]

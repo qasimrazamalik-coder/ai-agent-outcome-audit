@@ -1,0 +1,22 @@
+version: 2
+
+sources:
+  - name: cx
+    description: The cx-journey-warehouse marts (attached read-only as database `cx`).
+    database: cx
+    schema: marts
+    tables:
+      - name: fct_contacts
+      - name: dim_contact_driver
+      - name: dim_customer
+
+  - name: cx_truth
+    description: >
+      Simulation ground truth from the upstream generator. Used only by
+      proxy_validation, to measure how well the repeat-contact proxy recovers whether an
+      issue was really resolved. A real deployment has no such table.
+    database: cx
+    schema: raw_truth
+    tables:
+      - name: session_episode
+      - name: episodes

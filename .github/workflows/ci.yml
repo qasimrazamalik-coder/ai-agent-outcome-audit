@@ -1,0 +1,25 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: pip install -r requirements.txt
+      - name: Unit tests (statistics, cost model)
+        run: pytest -q
+      - name: Build the upstream warehouse, run dbt models + tests, produce the report
+        run: python scripts/run_audit.py --bootstrap --scale 0.25
+      - uses: actions/upload-artifact@v4
+        with:
+          name: audit-report
+          path: reports/

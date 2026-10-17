@@ -1,0 +1,12 @@
+bot_audit:
+  target: dev
+  outputs:
+    dev:
+      type: duckdb
+      path: "{{ env_var('AUDIT_DB_PATH', '../data/audit.duckdb') }}"
+      threads: 4
+      # The upstream warehouse is attached read-only: this project never writes to it.
+      attach:
+        - path: "{{ env_var('CX_WAREHOUSE_PATH', '../data/warehouse.duckdb') }}"
+          alias: cx
+          read_only: true

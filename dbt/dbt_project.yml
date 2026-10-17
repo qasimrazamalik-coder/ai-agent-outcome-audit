@@ -1,0 +1,22 @@
+name: bot_audit
+version: "1.0.0"
+config-version: 2
+profile: bot_audit
+
+model-paths: ["models"]
+test-paths: ["tests"]
+macro-paths: ["macros"]
+target-path: "target"
+clean-targets: ["target", "logs"]
+
+vars:
+  bot_cost_per_session_usd: 0.85
+
+models:
+  bot_audit:
+    +materialized: table
+    +schema: results
+
+tests:
+  bot_audit:
+    +severity: error

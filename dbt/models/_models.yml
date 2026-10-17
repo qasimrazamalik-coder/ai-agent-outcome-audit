@@ -1,0 +1,40 @@
+version: 2
+
+models:
+  - name: bot_sessions
+    description: Contacts that started with the bot, with outcome-based resolution from the warehouse.
+    columns:
+      - name: session_id
+        data_tests: [unique, not_null]
+      - name: intent_code
+        data_tests: [not_null]
+
+  - name: agent_contacts
+    description: Contacts handled by an agent without the bot (comparison path).
+    columns:
+      - name: session_id
+        data_tests: [unique, not_null]
+
+  - name: driver_outcomes
+    description: Counts per contact driver for the bot path and the agent-direct path.
+    columns:
+      - name: intent_code
+        data_tests: [unique, not_null]
+      - name: bot_true_resolved
+        description: Contained AND no repeat contact or ticket on the same driver within 7 days.
+
+  - name: churn_by_outcome
+    description: 30-day churn after a contained bot session, split by whether it really resolved the issue.
+    data_tests:
+      - unique_combination:
+          arguments:
+            columns: [intent_code, outcome]
+
+  - name: proxy_validation
+    description: Measured (repeat-contact proxy) vs true resolution rate per driver, using simulation ground truth.
+    columns:
+      - name: intent_code
+        data_tests: [unique, not_null]
+      - name: proxy_accuracy
+        data_tests:
+          - between: {arguments: {min_value: 0, max_value: 1}}
